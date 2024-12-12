@@ -7,6 +7,7 @@ export enum BuilderNode {
     CONDITIONAL_PATH = "conditional-path",
     GOOGLE_INTEGRATION = "google-integration",
     IMAGE_GENERATION = "image-generation",
+    LLM = "llm",
 }
 
 export type BuilderNodeType = `${BuilderNode}`;

@@ -1,5 +1,5 @@
+import { type Edge, type Node, useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
-import { useReactFlow, type Node, type Edge } from "@xyflow/react";
 
 interface WorkflowNode {
     id: string;
@@ -18,10 +18,10 @@ export function useWorkflowState() {
         const nodes = getNodes();
         const edges = getEdges();
 
-        const workflowNodes: WorkflowNode[] = nodes.map(node => {
+        const workflowNodes: WorkflowNode[] = nodes.map((node) => {
             const nodeConnections = {
                 incoming: edges.filter(edge => edge.target === node.id).map(edge => edge.source),
-                outgoing: edges.filter(edge => edge.source === node.id).map(edge => edge.target)
+                outgoing: edges.filter(edge => edge.source === node.id).map(edge => edge.target),
             };
 
             return {
@@ -36,6 +36,6 @@ export function useWorkflowState() {
     }, [getNodes, getEdges]);
 
     return {
-        getWorkflowData
+        getWorkflowData,
     };
-} 
+}
