@@ -21,12 +21,10 @@ export enum GoogleIntegrationType {
 
 export interface GoogleDocsConfig {
     link: string;
-    description: string;
 }
 
 export interface GoogleSheetsConfig {
     link: string;
-    description: string;
     columns: string[];
 }
 
@@ -59,8 +57,8 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                 if (node) {
                     node.data.type = type;
                     node.data.config = type === GoogleIntegrationType.DOCS
-                        ? { link: "", description: "" }
-                        : { link: "", description: "", columns: [] };
+                        ? { link: "" }
+                        : { link: "", columns: [] };
                 }
             }));
         },
@@ -164,37 +162,22 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                 </div>
 
                 <div className="flex flex-col divide-y divide-dark-200">
-                    <div className="flex flex-col p-4">
-                        <div className="text-xs text-light-900/50 font-medium">
-                            Description/Prompt
+                    {data.type === GoogleIntegrationType.SHEETS && (
+                        <div className="flex flex-col p-4">
+                            <div className="text-xs text-light-900/50 font-medium">
+                                Columns
+                            </div>
+                            <div className="line-clamp-2 mt-2 text-sm leading-snug">
+                                {isEmpty((data.config as GoogleSheetsConfig).columns)
+                                    ? (
+                                            <span className="text-light-900/80 italic">No columns selected yet...</span>
+                                        )
+                                    : (
+                                            (data.config as GoogleSheetsConfig).columns.join(", ")
+                                        )}
+                            </div>
                         </div>
-                        <div className="line-clamp-4 mt-2 text-sm leading-snug">
-                            {isEmpty(data.config.description)
-                                ? (
-                                        <span className="text-light-900/80 italic">No description yet...</span>
-                                    )
-                                : (
-                                        data.config.description
-                                    )}
-                        </div>
-
-                        {data.type === GoogleIntegrationType.SHEETS && (
-                            <>
-                                <div className="mt-4 text-xs text-light-900/50 font-medium">
-                                    Columns
-                                </div>
-                                <div className="line-clamp-2 mt-2 text-sm leading-snug">
-                                    {isEmpty((data.config as GoogleSheetsConfig).columns)
-                                        ? (
-                                                <span className="text-light-900/80 italic">No columns selected yet...</span>
-                                            )
-                                        : (
-                                                (data.config as GoogleSheetsConfig).columns.join(", ")
-                                            )}
-                                </div>
-                            </>
-                        )}
-                    </div>
+                    )}
 
                     <div className="px-4 py-2">
                         <div className="text-xs text-light-900/50">
@@ -262,7 +245,6 @@ export const metadata: RegisterNodeMetadata<GoogleIntegrationNodeData> = {
         type: GoogleIntegrationType.DOCS,
         config: {
             link: "",
-            description: "",
         },
     },
     propertyPanel: GoogleIntegrationPropertyPanel,
