@@ -29,17 +29,17 @@ export function NavigationBarModule() {
                 <div className="flex items-center py-0.5 pl-2">
                     <div className="size-8 flex shrink-0 select-none items-center justify-center rounded-lg bg-teal-600 text-sm font-bold leading-none">
                         <span className="translate-y-px">
-                            DS
+                            A
                         </span>
                     </div>
 
                     <div className="ml-3 h-full flex flex-col select-none justify-center gap-y-1 leading-none">
                         <div className="text-sm font-medium leading-none <md:(text-xs)">
-                            Chatbot Flow Builder - BiteSpeed Frontend Task
+                            Merlin Flow
                         </div>
 
                         <div className="text-xs text-light-50/60 leading-none">
-                            By Denish Sharma
+                            By Merlin ke Rakshak
                         </div>
                     </div>
                 </div>
@@ -63,27 +63,11 @@ export function NavigationBarModule() {
                                 </Switch.Case>
                             </Switch>
                             <span className="pr-0.5">
-                                {isValidating ? "Validating Flow" : "Validate Flow"}
+                                {isValidating ? "Executing Flow" : "Execute Flow"}
                             </span>
                         </button>
 
                         <div className="h-4 w-px bg-dark-300" />
-
-                        <div className="flex items-stretch gap-x-0.5">
-                            <SocialButtonLink
-                                onClick={() => trackSocialLinkClick("linkedin")}
-                                href="https://www.linkedin.com/in/denishsharma/"
-                            >
-                                <div className="i-mynaui:brand-linkedin size-4.5" />
-                            </SocialButtonLink>
-
-                            <SocialButtonLink
-                                onClick={() => trackSocialLinkClick("github")}
-                                href="https://github.com/denishsharma/chatbot-flow-builder-task-bitespeed"
-                            >
-                                <div className="i-mynaui:brand-github size-4.5" />
-                            </SocialButtonLink>
-                        </div>
                     </div>
                 </Whenever>
             </div>

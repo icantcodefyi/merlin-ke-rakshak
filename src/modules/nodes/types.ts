@@ -5,6 +5,8 @@ export enum BuilderNode {
     END = "end",
     TEXT_MESSAGE = "text-message",
     CONDITIONAL_PATH = "conditional-path",
+    GOOGLE_INTEGRATION = "google-integration",
+    IMAGE_GENERATION = "image-generation",
 }
 
 export type BuilderNodeType = `${BuilderNode}`;
