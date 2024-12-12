@@ -1,5 +1,5 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { type Node, type NodeProps, Position, useReactFlow } from "@xyflow/react";
+import { type NodeProps, Position, useReactFlow } from "@xyflow/react";
 import { produce } from "immer";
 import { nanoid } from "nanoid";
 import { isEmpty } from "radash";
@@ -11,6 +11,7 @@ import { type BaseNodeData, BuilderNode, type RegisterNodeMetadata } from "~/mod
 import { getNodeDetail } from "~/modules/nodes/utils";
 import GoogleIntegrationPropertyPanel from "~/modules/sidebar/panels/node-properties/property-panels/google-integration-property-panel";
 import { useApplicationState } from "~/stores/application-state";
+
 import { cn } from "~@/utils/cn";
 
 export enum GoogleIntegrationType {
@@ -36,7 +37,13 @@ export interface GoogleIntegrationNodeData extends BaseNodeData {
 
 const NODE_TYPE = BuilderNode.GOOGLE_INTEGRATION;
 
-type GoogleIntegrationNodeProps = NodeProps<Node<GoogleIntegrationNodeData, typeof NODE_TYPE>>;
+interface FlowNode {
+    id: string;
+    data: GoogleIntegrationNodeData;
+    [key: string]: any;
+}
+
+type GoogleIntegrationNodeProps = NodeProps<GoogleIntegrationNodeData>;
 
 export function GoogleIntegrationNode({ id, isConnectable, selected, data }: GoogleIntegrationNodeProps) {
     const meta = useMemo(() => getNodeDetail(NODE_TYPE), []);
@@ -47,12 +54,12 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
 
     const onTypeChange = useCallback(
         (type: GoogleIntegrationType) => {
-            setNodes(nodes => produce(nodes, (draft) => {
-                const node = draft.find(n => n.id === id);
+            setNodes((nodes: FlowNode[]) => produce(nodes, (draft: FlowNode[]) => {
+                const node = draft.find((n: FlowNode) => n.id === id);
                 if (node) {
                     node.data.type = type;
-                    node.data.config = type === GoogleIntegrationType.DOCS 
-                        ? { link: "", description: "" } 
+                    node.data.config = type === GoogleIntegrationType.DOCS
+                        ? { link: "", description: "" }
                         : { link: "", description: "", columns: [] };
                 }
             }));
@@ -68,7 +75,7 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
         <>
             <div
                 data-selected={selected}
-                className="w-xs overflow-clip border border-dark-200 rounded-xl bg-dark-300/50 shadow-sm backdrop-blur-xl transition divide-y divide-dark-200 data-[selected=true]:(border-teal-600 ring-1 ring-teal-600/50)"
+                className="w-xs overflow-clip border border-dark-200 rounded-xl bg-dark-300/50 shadow-sm backdrop-blur-xl transition divide-y divide-dark-200 data-[selected=true]:(border-sky-600 ring-1 ring-sky-600/50)"
                 onDoubleClick={showNodeProperties}
             >
                 <div className="relative bg-dark-300/50">
@@ -96,9 +103,10 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                                 <DropdownMenu.Trigger asChild>
                                     <button
                                         type="button"
-                                        className="size-7 flex items-center justify-center border border-transparent rounded-lg bg-transparent outline-none transition active:(border-dark-200 bg-dark-400/50) hover:(bg-dark-100)"
+                                        className="h-7 flex items-center justify-center border border-transparent rounded-lg bg-transparent px-1.2 outline-none transition active:(border-dark-200 bg-dark-400/50) data-[state=open]:(border-dark-200 bg-dark-500) data-[state=closed]:(hover:bg-dark-100)"
                                     >
                                         <div className={cn(data.type === GoogleIntegrationType.DOCS ? "i-mdi:file-document" : "i-mdi:google-spreadsheet", "size-4")} />
+                                        <div className="i-lucide:chevrons-up-down ml-1 size-3 op-50" />
                                     </button>
                                 </DropdownMenu.Trigger>
 
@@ -111,7 +119,7 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                                         )}
                                     >
                                         <DropdownMenu.Item
-                                            className="h-8 flex cursor-pointer items-center border border-transparent rounded-lg p-1.5 pr-6 outline-none transition active:(border-dark-100 bg-dark-300) hover:bg-dark-100"
+                                            className="cursor-pointer border border-transparent rounded-lg p-1.5 outline-none transition active:(border-dark-100 bg-dark-300) hover:bg-dark-100"
                                             onSelect={() => onTypeChange(GoogleIntegrationType.DOCS)}
                                         >
                                             <div className="flex items-center gap-x-2">
@@ -122,7 +130,7 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                                             </div>
                                         </DropdownMenu.Item>
                                         <DropdownMenu.Item
-                                            className="h-8 flex cursor-pointer items-center border border-transparent rounded-lg p-1.5 pr-6 outline-none transition active:(border-dark-100 bg-dark-300) hover:bg-dark-100"
+                                            className="cursor-pointer border border-transparent rounded-lg p-1.5 outline-none transition active:(border-dark-100 bg-dark-300) hover:bg-dark-100"
                                             onSelect={() => onTypeChange(GoogleIntegrationType.SHEETS)}
                                         >
                                             <div className="flex items-center gap-x-2">
@@ -161,11 +169,13 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                             Description/Prompt
                         </div>
                         <div className="line-clamp-4 mt-2 text-sm leading-snug">
-                            {isEmpty(data.config.description) ? (
-                                <span className="text-light-900/80 italic">No description yet...</span>
-                            ) : (
-                                data.config.description
-                            )}
+                            {isEmpty(data.config.description)
+                                ? (
+                                        <span className="text-light-900/80 italic">No description yet...</span>
+                                    )
+                                : (
+                                        data.config.description
+                                    )}
                         </div>
 
                         {data.type === GoogleIntegrationType.SHEETS && (
@@ -174,11 +184,13 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                                     Columns
                                 </div>
                                 <div className="line-clamp-2 mt-2 text-sm leading-snug">
-                                    {isEmpty((data.config as GoogleSheetsConfig).columns) ? (
-                                        <span className="text-light-900/80 italic">No columns selected yet...</span>
-                                    ) : (
-                                        (data.config as GoogleSheetsConfig).columns.join(", ")
-                                    )}
+                                    {isEmpty((data.config as GoogleSheetsConfig).columns)
+                                        ? (
+                                                <span className="text-light-900/80 italic">No columns selected yet...</span>
+                                            )
+                                        : (
+                                                (data.config as GoogleSheetsConfig).columns.join(", ")
+                                            )}
                                 </div>
                             </>
                         )}
@@ -186,16 +198,33 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
 
                     <div className="px-4 py-2">
                         <div className="text-xs text-light-900/50">
-                            {isEmpty(data.config.link) ? (
-                                <span className="text-light-900/80 italic">No Google {data.type === GoogleIntegrationType.DOCS ? "Docs" : "Sheets"} link provided yet...</span>
-                            ) : (
-                                <>Using Google {data.type === GoogleIntegrationType.DOCS ? "Docs" : "Sheets"} for integration.</>
-                            )}
+                            {isEmpty(data.config.link)
+                                ? (
+                                        <span className="text-light-900/80 italic">
+                                            No Google
+                                            {data.type === GoogleIntegrationType.DOCS ? "Docs" : "Sheets"}
+                                            {" "}
+                                            link provided yet...
+                                        </span>
+                                    )
+                                : (
+                                        <>
+                                            Using Google
+                                            {data.type === GoogleIntegrationType.DOCS ? "Docs" : "Sheets"}
+                                            {" "}
+                                            for integration.
+                                        </>
+                                    )}
                         </div>
                     </div>
 
                     <div className="bg-dark-300/30 px-4 py-2 text-xs text-light-900/50">
-                        Node: <span className="text-light-900/60 font-semibold">#{id}</span>
+                        Node:
+                        {" "}
+                        <span className="text-light-900/60 font-semibold">
+                            #
+                            {id}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -237,4 +266,4 @@ export const metadata: RegisterNodeMetadata<GoogleIntegrationNodeData> = {
         },
     },
     propertyPanel: GoogleIntegrationPropertyPanel,
-}; 
+};

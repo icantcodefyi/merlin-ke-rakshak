@@ -1,6 +1,6 @@
 import { Background, type Connection, type Edge, type EdgeTypes, type Node, type NodeChange, ReactFlow, addEdge, useEdgesState, useNodesState, useReactFlow } from "@xyflow/react";
 import { nanoid } from "nanoid";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 import AddNodeFloatingMenu from "~/modules/flow-builder/components/add-node-floating-menu/add-node-floating-menu";
 import CustomControls from "~/modules/flow-builder/components/controls/custom-controls";
@@ -12,6 +12,7 @@ import { useDragDropFlowBuilder } from "~/modules/flow-builder/hooks/use-drag-dr
 import { useIsValidConnection } from "~/modules/flow-builder/hooks/use-is-valid-connection";
 import { useNodeAutoAdjust } from "~/modules/flow-builder/hooks/use-node-auto-adjust";
 import { useOnNodesDelete } from "~/modules/flow-builder/hooks/use-on-nodes-delete";
+import { useWorkflowState } from "~/modules/flow-builder/hooks/use-workflow-state";
 import { NODE_TYPES } from "~/modules/nodes";
 import { useApplicationState } from "~/stores/application-state";
 
@@ -28,6 +29,7 @@ export function FlowBuilderModule() {
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(defaultEdges);
 
     const { getNodes } = useReactFlow();
+    const { getWorkflowData } = useWorkflowState();
 
     const deleteKeyCode = useDeleteKeyCode();
     const onNodesDelete = useOnNodesDelete(nodes);
@@ -82,6 +84,9 @@ export function FlowBuilderModule() {
         },
         [autoAdjustNode, getNodes, handleAutoAdjustNodeAfterNodeMeasured, onNodesChange],
     );
+    const workflowData = getWorkflowData();
+    console.log(workflowData);
+
 
     return (
         <div className="relative size-full">
