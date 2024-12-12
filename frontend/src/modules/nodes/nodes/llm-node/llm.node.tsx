@@ -92,7 +92,9 @@ export function LLMNode({
                             <DropdownMenu.Root>
                                 <DropdownMenu.Trigger asChild>
                                     <button className="h-7 flex items-center justify-center border border-transparent rounded-lg bg-transparent px-1.2 outline-none transition active:(border-dark-200 bg-dark-400/50) data-[state=open]:(border-dark-200 bg-dark-500) data-[state=closed]:(hover:bg-dark-100)">
-                                        <div className={cn("i-mynaui:magic-wand", "size-4")} />
+                                        {data.mode === LLMMode.CONTENT_GENERATION && <div className="i-mynaui:edit size-4" />}
+                                        {data.mode === LLMMode.SUMMARIZATION && <div className="i-material-symbols-summarize-outline size-4" />}
+                                        {data.mode === LLMMode.TRANSLATION && <div className="i-material-symbols-g-translate size-4" />}
                                         <div className="i-lucide:chevrons-up-down ml-1 size-3 op-50" />
                                     </button>
                                 </DropdownMenu.Trigger>
@@ -108,33 +110,48 @@ export function LLMNode({
                                             className="cursor-pointer rounded-md p-2 text-sm outline-none data-[highlighted]:bg-white/10 hover:bg-white/10"
                                             onClick={() => handleModeChange(LLMMode.CONTENT_GENERATION)}
                                         >
-                                            <div className="flex items-center gap-x-2">
-                                                <div className="i-mynaui:edit size-4" />
-                                                <div className="text-xs font-medium leading-none tracking-wide">
-                                                    Content Generation
+                                            <div className="flex items-center justify-between gap-x-2">
+                                                <div className="flex items-center gap-x-2">
+                                                    <div className="i-mynaui:edit size-4" />
+                                                    <div className="text-xs font-medium leading-none tracking-wide">
+                                                        Content Generation
+                                                    </div>
                                                 </div>
+                                                {data.mode === LLMMode.CONTENT_GENERATION && (
+                                                    <div className="i-lucide:check size-4 text-teal-500" />
+                                                )}
                                             </div>
                                         </DropdownMenu.Item>
                                         <DropdownMenu.Item
                                             className="cursor-pointer rounded-md p-2 text-sm outline-none data-[highlighted]:bg-white/10 hover:bg-white/10"
                                             onClick={() => handleModeChange(LLMMode.SUMMARIZATION)}
                                         >
-                                            <div className="flex items-center gap-x-2">
-                                                <div className="i-mynaui:compress size-4" />
-                                                <div className="text-xs font-medium leading-none tracking-wide">
-                                                    Text Summarization
+                                            <div className="flex items-center justify-between gap-x-2">
+                                                <div className="flex items-center gap-x-2">
+                                                    <div className="i-material-symbols-summarize-outline size-4" />
+                                                    <div className="text-xs font-medium leading-none tracking-wide">
+                                                        Text Summarization
+                                                    </div>
                                                 </div>
+                                                {data.mode === LLMMode.SUMMARIZATION && (
+                                                    <div className="i-lucide:check size-4 text-teal-500" />
+                                                )}
                                             </div>
                                         </DropdownMenu.Item>
                                         <DropdownMenu.Item
                                             className="cursor-pointer rounded-md p-2 text-sm outline-none data-[highlighted]:bg-white/10 hover:bg-white/10"
                                             onClick={() => handleModeChange(LLMMode.TRANSLATION)}
                                         >
-                                            <div className="flex items-center gap-x-2">
-                                                <div className="i-mynaui:translate size-4" />
-                                                <div className="text-xs font-medium leading-none tracking-wide">
-                                                    Language Translation
+                                            <div className="flex items-center justify-between gap-x-2">
+                                                <div className="flex items-center gap-x-2">
+                                                    <div className="i-material-symbols-g-translate size-4" />
+                                                    <div className="text-xs font-medium leading-none tracking-wide">
+                                                        Language Translation
+                                                    </div>
                                                 </div>
+                                                {data.mode === LLMMode.TRANSLATION && (
+                                                    <div className="i-lucide:check size-4 text-teal-500" />
+                                                )}
                                             </div>
                                         </DropdownMenu.Item>
                                     </DropdownMenu.Content>
@@ -248,7 +265,9 @@ export function LLMPropertyPanel({
                                 ? "Enter text to summarize..."
                                 : "Enter text to translate..."
                     }
-                    className="h-32"
+                    className="w-full min-h-[8rem] rounded-lg bg-dark-400/50 px-3 py-2 text-sm placeholder:text-light-900/50 
+                    border border-dark-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none 
+                    transition resize-y"
                 />
             </div>
 
