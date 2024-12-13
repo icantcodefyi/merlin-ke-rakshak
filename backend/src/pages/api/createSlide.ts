@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { google } from 'googleapis';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Add CORS headers
@@ -20,17 +21,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  // Get token from Authorization header
-  const accessToken = req.headers.authorization?.replace('Bearer ', '');
-
-  if (!accessToken) {
-    return res.status(401).json({ 
-      error: 'No access token provided',
-      needsAuth: true 
-    });
-  }
-
   try {
+    // Get the authenticated user's ID using Clerk
+    const { userId } = await auth();
+
+    if (!userId) {
+      return res.status(401).json({ 
+        error: 'User not authenticated',
+        needsAuth: true 
+      });
+    }
+
+    // Get the OAuth access token for Google from Clerk
+    const client = await clerkClient();
+    const tokens = await client.users.getUserOauthAccessToken(userId, 'oauth_google');
+    
+    if (!tokens || tokens.length === 0) {
+      return res.status(401).json({ 
+        error: 'No Google OAuth token found',
+        needsAuth: true 
+      });
+    }
+
+    const accessToken = tokens[0].token;
+
     // Create OAuth2 client with the token
     const oauth2Client = new google.auth.OAuth2();
     oauth2Client.setCredentials({ access_token: accessToken });
@@ -59,7 +73,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('Error creating presentation:', error);
     return res.status(500).json({ 
       success: false,
-      error: 'Failed to create presentation' 
+      error: 'Failed to create presentation',
+      details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 }

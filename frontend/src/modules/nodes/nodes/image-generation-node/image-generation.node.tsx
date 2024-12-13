@@ -95,7 +95,7 @@ export function ImageGenerationNode({ id, isConnectable, selected, data }: Image
             >
                 <div className="relative bg-dark-300/50">
                     <div className="absolute inset-0">
-                        <div className="absolute h-full w-3/5 from-teal-900/20 to-transparent bg-gradient-to-r" />
+                        <div className="absolute h-full w-3/5 from-rose-900/20 to-transparent bg-gradient-to-r" />
                     </div>
 
                     <div className="relative h-9 flex items-center justify-between gap-x-4 px-0.5 py-0.5">

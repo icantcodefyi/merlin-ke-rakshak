@@ -72,7 +72,10 @@ export function NavigationBarModule() {
                         <div className="h-full flex items-center">
                             <SignedOut>
                                 <SignInButton mode="modal" forceRedirectUrl="/">
-                                    <button type="button" className="h-full flex items-center justify-center gap-x-2 border border-dark-300 rounded-lg bg-dark-300/50 px-3 text-sm outline-none transition active:(bg-dark-400) hover:(bg-dark-200)">
+                                    <button
+                                        type="button"
+                                        className="h-full flex items-center justify-center gap-x-2 border border-dark-300 rounded-lg bg-dark-300/50 px-3 text-sm outline-none transition active:(bg-dark-400) hover:(bg-dark-200)"
+                                    >
                                         <div className="i-lucide:log-in size-5" />
                                         Sign In
                                     </button>

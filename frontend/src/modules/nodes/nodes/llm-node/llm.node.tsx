@@ -72,7 +72,7 @@ export function LLMNode({
             >
                 <div className="relative bg-dark-300/50">
                     <div className="absolute inset-0">
-                        <div className="absolute h-full w-3/5 from-teal-900/20 to-transparent bg-gradient-to-r" />
+                        <div className="absolute h-full w-3/5 from-indigo-900/20 to-transparent bg-gradient-to-r" />
                     </div>
 
                     <div className="relative h-9 flex items-center justify-between gap-x-4 px-0.5 py-0.5">
@@ -183,20 +183,26 @@ export function LLMNode({
                             {data.mode === LLMMode.CONTENT_GENERATION ? "Input Text" : data.mode === LLMMode.TRANSLATION ? "Input Text" : "Input Text"}
                         </div>
                         <div className="line-clamp-4 mt-2 text-sm leading-snug">
-                            {isEmpty(data.input) ? (
-                                <span className="text-light-900/80 italic">No input text yet...</span>
-                            ) : (
-                                data.input
-                            )}
+                            {isEmpty(data.input)
+                                ? (
+                                        <span className="text-light-900/80 italic">No input text yet...</span>
+                                    )
+                                : (
+                                        data.input
+                                    )}
                         </div>
                         {(data.mode === LLMMode.CONTENT_GENERATION && data.contentType) && (
                             <div className="mt-2 text-xs text-light-900/50">
-                                Content Type: {data.contentType}
+                                Content Type:
+                                {" "}
+                                {data.contentType}
                             </div>
                         )}
                         {(data.mode === LLMMode.TRANSLATION && data.targetLanguage) && (
                             <div className="mt-2 text-xs text-light-900/50">
-                                Target Language: {data.targetLanguage}
+                                Target Language:
+                                {" "}
+                                {data.targetLanguage}
                             </div>
                         )}
                     </div>
@@ -253,9 +259,7 @@ export function LLMPropertyPanel({
                                 ? "Enter text to summarize..."
                                 : "Enter text to translate..."
                     }
-                    className="w-full min-h-[8rem] rounded-lg bg-dark-400/50 px-3 py-2 text-sm placeholder:text-light-900/50 
-                    border border-dark-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none 
-                    transition resize-y"
+                    className="min-h-[8rem] w-full resize-y border border-dark-200 rounded-lg bg-dark-400/50 px-3 py-2 text-sm outline-none transition focus:border-indigo-500 placeholder:text-light-900/50 focus:ring-1 focus:ring-indigo-500"
                 />
             </div>
 

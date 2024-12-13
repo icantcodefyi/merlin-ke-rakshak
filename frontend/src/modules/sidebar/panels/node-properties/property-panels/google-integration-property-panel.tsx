@@ -17,6 +17,11 @@ const GoogleIntegrationTypes = {
         icon: "i-mdi:google-spreadsheet",
         type: "sheets" as GoogleIntegrationType,
     },
+    slides: {
+        name: "Google Slides",
+        icon: "i-mdi:presentation-play",
+        type: "slides" as GoogleIntegrationType,
+    },
 } as const;
 
 type GoogleIntegrationPropertyPanelProps = Readonly<{
@@ -96,9 +101,9 @@ export default function GoogleIntegrationPropertyPanel({ id, data, updateData }:
                                         className="cursor-pointer border border-transparent rounded-lg p-1.5 outline-none transition active:(border-dark-100 bg-dark-300/60) hover:bg-dark-100"
                                         onSelect={() => updateData({
                                             type: details.type,
-                                            config: details.type === "docs"
-                                                ? { link: "", description: "" }
-                                                : { link: "", description: "", columns: [] },
+                                            config: details.type === "sheets"
+                                                ? { link: "", columns: [] }
+                                                : { link: "" },
                                         })}
                                     >
                                         <div className="flex items-center gap-x-2">
@@ -118,7 +123,11 @@ export default function GoogleIntegrationPropertyPanel({ id, data, updateData }:
 
             <div className="flex flex-col">
                 <div className="text-xs text-light-900/60 font-semibold">
-                    {data.type === "docs" ? "Google Docs Link" : "Google Sheets Link"}
+                    {data.type === "sheets" 
+                        ? "Google Sheets Link" 
+                        : data.type === "docs"
+                            ? "Google Docs Link"
+                            : "Google Slides Link"}
                 </div>
 
                 <div className="mt-2 flex">
@@ -126,23 +135,14 @@ export default function GoogleIntegrationPropertyPanel({ id, data, updateData }:
                         type="text"
                         value={data.config.link}
                         onChange={e => updateConfig({ link: e.target.value })}
-                        placeholder={data.type === "docs" ? "Enter Google Docs link..." : "Enter Google Sheets link..."}
+                        placeholder={
+                            data.type === "sheets" 
+                                ? "Enter Google Sheets link..." 
+                                : data.type === "docs"
+                                    ? "Enter Google Docs link..."
+                                    : "Enter Google Slides link..."
+                        }
                         className="h-8 w-full border border-dark-200 rounded-md bg-dark-400 px-2.5 text-sm font-medium shadow-sm outline-none transition focus:(border-teal-800 bg-dark-500 ring-2 ring-teal-800/50) hover:(bg-dark-300/60) placeholder:(text-light-900/50 font-normal italic)"
-                    />
-                </div>
-            </div>
-
-            <div className="flex flex-col">
-                <div className="text-xs text-light-900/60 font-semibold">
-                    Description/Prompt
-                </div>
-
-                <div className="mt-2 flex">
-                    <textarea
-                        value={data.config.description}
-                        onChange={e => updateConfig({ description: e.target.value })}
-                        placeholder="Enter description or prompt..."
-                        className="min-h-30 w-full resize-none border border-dark-200 rounded-md bg-dark-400 px-2.5 py-2 text-sm font-medium shadow-sm outline-none transition focus:(border-teal-800 bg-dark-500 ring-2 ring-teal-800/50) hover:(bg-dark-300/60) placeholder:(text-light-900/50 font-normal italic)"
                     />
                 </div>
             </div>

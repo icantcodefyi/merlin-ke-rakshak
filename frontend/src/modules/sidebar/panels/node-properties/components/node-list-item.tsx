@@ -28,7 +28,7 @@ export function NodeListItem({ id, title, className, icon, selected, pseudoSelec
         >
             <div className="flex items-center">
                 <div className={cn(icon, "size-4.5")} />
-                <div className="ml-2.5 flex items-center text-xs font-medium leading-none tracking-wide uppercase op-80">
+                <div className="ml-2.5 flex items-center overflow-hidden text-ellipsis whitespace-nowrap text-xs font-medium leading-none tracking-wide uppercase op-80">
                     <span className="translate-y-px">
                         {title}
                     </span>
