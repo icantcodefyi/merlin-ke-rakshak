@@ -8,6 +8,7 @@ export enum BuilderNode {
     GOOGLE_INTEGRATION = "google-integration",
     IMAGE_GENERATION = "image-generation",
     LLM = "llm",
+    CRYPTO_ANALYZER = "crypto-analyzer",
 }
 
 export type BuilderNodeType = `${BuilderNode}`;

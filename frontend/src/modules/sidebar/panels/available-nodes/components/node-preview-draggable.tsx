@@ -16,6 +16,7 @@ enum BuilderNode {
     GOOGLE_INTEGRATION = "google-integration",
     IMAGE_GENERATION = "image-generation",
     LLM = "llm",
+    CRYPTO_ANALYZER = "crypto-analyzer",
 }
 
 type NodePreviewDraggableProps = Readonly<{
@@ -61,6 +62,8 @@ export function NodePreviewDraggable({ icon, title, description, type, isMobileV
                 return "hover:(ring-2 ring-purple-600/50)";
             case BuilderNode.TEXT_MESSAGE:
                 return "hover:(ring-2 ring-amber-600/50)";
+            case BuilderNode.CRYPTO_ANALYZER:
+                return "hover:(ring-2 ring-blue-600/50)";
             default:
                 return "";
         }
