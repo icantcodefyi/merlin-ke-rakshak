@@ -57,12 +57,12 @@ export function TextMessageNode({ id, isConnectable, selected, data }: TextMessa
         <>
             <div
                 data-selected={selected}
-                className="w-xs overflow-clip border border-dark-200 rounded-xl bg-dark-300/50 shadow-sm backdrop-blur-xl transition divide-y divide-dark-200 data-[selected=true]:(border-teal-600 ring-1 ring-teal-600/50)"
+                className="w-xs overflow-clip border border-dark-200 rounded-xl bg-dark-300/50 shadow-sm backdrop-blur-xl transition divide-y divide-dark-200 data-[selected=true]:(border-amber-600 ring-1 ring-amber-600/50)"
                 onDoubleClick={showNodeProperties}
             >
                 <div className="relative bg-dark-300/50">
                     <div className="absolute inset-0">
-                        <div className="absolute h-full w-3/5 from-teal-900/20 to-transparent bg-gradient-to-r" />
+                        <div className="absolute h-full w-3/5 from-amber-900/20 to-transparent bg-gradient-to-r" />
                     </div>
 
                     <div className="relative h-9 flex items-center justify-between gap-x-4 px-0.5 py-0.5">

@@ -8,6 +8,16 @@ import { NODE_TYPE_DRAG_DATA_FORMAT } from "~/constants/symbols";
 
 import { cn } from "~@/utils/cn";
 
+enum BuilderNode {
+    START = "start",
+    END = "end",
+    TEXT_MESSAGE = "text-message",
+    CONDITIONAL_PATH = "conditional-path",
+    GOOGLE_INTEGRATION = "google-integration",
+    IMAGE_GENERATION = "image-generation",
+    LLM = "llm",
+}
+
 type NodePreviewDraggableProps = Readonly<{
     icon: string | ReactNode;
     title: string;
@@ -36,10 +46,31 @@ export function NodePreviewDraggable({ icon, title, description, type, isMobileV
         setActivePanel("none");
     }, [insertNode, isMobileView, setActivePanel, type]);
 
+    const getHoverClass = (type: string) => {
+        switch (type) {
+            case BuilderNode.START:
+            case BuilderNode.END:
+                return "hover:(ring-2 ring-teal-600/50)";
+            case BuilderNode.LLM:
+                return "hover:(ring-2 ring-indigo-600/50)";
+            case BuilderNode.IMAGE_GENERATION:
+                return "hover:(ring-2 ring-rose-600/50)";
+            case BuilderNode.GOOGLE_INTEGRATION:
+                return "hover:(ring-2 ring-sky-600/50)";
+            case BuilderNode.CONDITIONAL_PATH:
+                return "hover:(ring-2 ring-purple-600/50)";
+            case BuilderNode.TEXT_MESSAGE:
+                return "hover:(ring-2 ring-amber-600/50)";
+            default:
+                return "";
+        }
+    };
+
     return (
         <div
             className={cn(
-                "flex cursor-grab select-none gap-2 border border-dark-300 rounded-xl bg-dark-400 p-2.5 shadow-sm transition hover:(ring-2 ring-teal-600/50)",
+                "flex cursor-grab select-none gap-2 border border-dark-300 rounded-xl bg-dark-400 p-2.5 shadow-sm transition",
+                getHoverClass(type),
                 isMobileView && "active:(op-70 scale-98)",
             )}
             onClick={onClick}
