@@ -4,7 +4,7 @@ import Cors from 'cors';
 import { getSheetRawData } from '@/serverActions/sheetSA';
 import { headers } from 'next/headers';
 
-const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkMGFlMTRkMjhkMTY1NzhiMzFjOGJlNmM4ZmRlZDM0ZDVlMWExYzEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU2hhaGJheiBBaG1hZCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLTU83ei1sSWstYTZHX1dWQTdFamd6TTdPSjZtdjlHN3VSUl9aSHBzcms2NThadGc9czk2LWMiLCJzdHJpcGVSb2xlIjoiYjJiX2FkbWluIiwicm9sZSI6Im93bmVyIiwicGxhbk5hbWUiOiJNZXJsaW4gVGVhbXMiLCJhZ2dyZWdhdG9yIjoic3RyaXBlIiwidGVhbUlkIjoiMTFlYmY5MjUtZmE2Yi00NjBmLTk5OGQtYjMzYzhmZmNhY2FlIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2ZveWVyLXdvcmsiLCJhdWQiOiJmb3llci13b3JrIiwiYXV0aF90aW1lIjoxNzMzNTYyMDQ2LCJ1c2VyX2lkIjoidzdkdlNkcFNYNlJzdk02cTdIbHpHTHZoWTNLMiIsInN1YiI6Inc3ZHZTZHBTWDZSc3ZNNnE3SGx6R0x2aFkzSzIiLCJpYXQiOjE3MzQwODY4NjEsImV4cCI6MTczNDA5MDQ2MSwiZW1haWwiOiJzaGFoYmF6QGZveWVyLndvcmsiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExODI2ODQwNjg5MDgwMDA3ODgxOSJdLCJlbWFpbCI6WyJzaGFoYmF6QGZveWVyLndvcmsiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.hsFSPKpURvM_dNgcCOxZlgR0p-NC6AyfoPeq0Dg2cVLg4zh_gF0GNZHJIR45kOJzhMc13uLPj9_JHQ0ytPpWCaZHlMaPe5t6FbfhTD69RiALMy-UJamcos_BzHevRwiKJowTig2-Yyh15k2I6N4PxsBdfUQbuBp6h5RDwUD0pIGbrq-uL2AOB2n6KbE2tfJZ4Y_MMI70Ot56IaCJvxgI_QKkc9xPvpBIvU1OXXeApDWAQE8e_TitmC5oebRH0tEZNwoQ8o_cK3M4oEDcElzHneJRMDnrsvaTHpHKhCBcyi8REktOW1bjBkKdB-qJbOtlLIBt5miEjZPSTOE3o_S8Sw"
+const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkMGFlMTRkMjhkMTY1NzhiMzFjOGJlNmM4ZmRlZDM0ZDVlMWExYzEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQW5pcnVkZGggRHViZ2UiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTFo2R3JIMk4wenVmZmU1ekRsZG4wM1ZZczkzTmhYWW5lbkIwV0RBNmw1ZDV5a2hqaUw9czk2LWMiLCJyb2xlIjoicGFpZCIsInBsYW5OYW1lIjoiTWVybGluIFBybyIsImFnZ3JlZ2F0b3IiOiJzdHJpcGUiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZm95ZXItd29yayIsImF1ZCI6ImZveWVyLXdvcmsiLCJhdXRoX3RpbWUiOjE3MzM0ODMxMjYsInVzZXJfaWQiOiJ2UzZmZjJZV014aFh6MkhKeUlsNHRpOWE3S3kyIiwic3ViIjoidlM2ZmYyWVdNeGhYejJISnlJbDR0aTlhN0t5MiIsImlhdCI6MTczNDA5MjM2NCwiZXhwIjoxNzM0MDk1OTY0LCJlbWFpbCI6ImFkdWJnZUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzgwOTA1MDYxMzg0NzQwODk5NCJdLCJlbWFpbCI6WyJhZHViZ2VAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.kZEGkA6ytzH8C7DWX_cx-EkN4LyZX59cM_8-minOdpr0E-V_-cUkTJ3mSpqLD2U18CHVTEMT4clsourmpAxqzjW2UuIzXxK0EIFJFZdlbTn32r1KDsJFZRNwMI2EBAmiZJDPgPNHvMbSHogZbE9t9lI7VkBUq62ELDQXEV6pp3DukfKHuaZx9fvazHhP2Ud3NatWtgbxvbYeloOpHKYe6NdAP3sHf1LTnUFrKr0QyqofYPtRMlRCrdxBw6id0lnay_FfT11W2UzPR6ryxr1eFXLF6YbYHRIZ8mkbn1kmiUlRxSktfkRgoWDs5mlcksm3GrXQq0b9Us7fi0pIdB8v1Q"
 
 type ExecuteFlowTypes = "image-gen" | "ppt-gen";
 
@@ -28,16 +28,29 @@ function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: Function) 
 }
 
 async function triggerImageGeneration(sheetData: any, prompt: string, columns: string[]) {
-    const response = await axios.post("http://localhost:8080/v1/superAutomationTools/image-generate-sat", {
-        config: {
+    try {
+        console.log("Triggering image generation with:", {
             prompt,
             columns,
-            data: sheetData
-        }
-    }, {
-        headers: { 'Authorization': `Bearer ${token}` }
-    })
-    return response.data.sheetUrl;
+            dataLength: sheetData?.length
+        });
+        
+        const response = await axios.post("http://localhost:8080/v1/superAutomationTools/image-generate-sat", {
+            config: {
+                prompt,
+                columns,
+                data: sheetData
+            }
+        }, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        console.log("Image generation response:", response.data);
+        return response.data.data.sheetUrl;
+    } catch (error) {
+        console.error("Error in image generation:", error.response?.data || error.message);
+        throw error;
+    }
 }
 
 async function triggerNotifications(sheetUrl: string) {
@@ -61,9 +74,20 @@ const services = {
         return { data: response, message: 'Google Sheets integration executed' };
     },
     'image-generation': async (node: any, sheetData: any, prompt: string, columns: string[]) => {
-        const sheetUrl = await triggerImageGeneration(sheetData, prompt, columns);
-        // Simulate image generation
-        return { data: sheetUrl, message: 'Image generation completed' };
+        console.log("Image generation service called with:", {
+            nodeId: node.id,
+            hasSheetData: !!sheetData,
+            prompt,
+            columns
+        });
+        try {
+            const sheetUrl = await triggerImageGeneration(sheetData, prompt, columns);
+            console.log("Received sheet URL from image generation:", sheetUrl);
+            return { data: sheetUrl, message: 'Image generation completed' };
+        } catch (error) {
+            console.error("Error in image generation service:", error);
+            throw error;
+        }
     },
     'text-message': async (node: any, sheetUrl: string) => {
         await triggerNotifications(sheetUrl);
@@ -94,13 +118,18 @@ async function processNode(nodeId: string, nodes: any, results = {}) {
     if (node.type === "image-generation") {
         const previodNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "google-integration");
         const columns = previodNode.data.config.columns;
-        const prompt = previodNode.data.config.description;
+        const prompt = node.data.config.prompt;
         const sheetData = results[previodNode.id].data;
         result = await service(node, sheetData, prompt, columns);
     }
-    if (node.type === "text-message") {
+    else if (node.type === "text-message") {
         const previodNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "image-generation");
+        console.log("Previous node for text-message:", previodNode);
+        console.log("All results so far:", results);
+        console.log("Previous node ID:", previodNode.id);
+        console.log("Results for previous node:", results[previodNode.id]);
         const sheetUrl = results[previodNode.id].data;
+        console.log("Sheet URL:", sheetUrl);
         result = await service(node, sheetUrl);
     }
     else {
