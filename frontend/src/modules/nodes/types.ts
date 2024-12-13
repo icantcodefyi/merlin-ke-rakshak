@@ -9,6 +9,7 @@ export enum BuilderNode {
     IMAGE_GENERATION = "image-generation",
     LLM = "llm",
     CRYPTO_ANALYZER = "crypto-analyzer",
+    API_REQUEST = "api-request",
 }
 
 export type BuilderNodeType = `${BuilderNode}`;

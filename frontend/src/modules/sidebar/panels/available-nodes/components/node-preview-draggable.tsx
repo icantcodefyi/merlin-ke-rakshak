@@ -17,6 +17,7 @@ enum BuilderNode {
     IMAGE_GENERATION = "image-generation",
     LLM = "llm",
     CRYPTO_ANALYZER = "crypto-analyzer",
+    API_REQUEST = "api-request",
 }
 
 type NodePreviewDraggableProps = Readonly<{
@@ -64,6 +65,8 @@ export function NodePreviewDraggable({ icon, title, description, type, isMobileV
                 return "hover:(ring-2 ring-amber-600/50)";
             case BuilderNode.CRYPTO_ANALYZER:
                 return "hover:(ring-2 ring-blue-600/50)";
+            case BuilderNode.API_REQUEST:
+                return "hover:(ring-2 ring-yellow-600/50)";
             default:
                 return "";
         }
