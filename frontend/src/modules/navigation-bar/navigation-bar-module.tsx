@@ -1,4 +1,5 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import axios from "axios";
 import { toast } from "sonner";
 
 import { useFlowValidator } from "~/modules/flow-builder/hooks/use-flow-validator";
@@ -7,14 +8,24 @@ import { useApplicationState } from "~/stores/application-state";
 import { Switch } from "~@/components/generics/switch-case";
 import { Whenever } from "~@/components/generics/whenever";
 import { cn } from "~@/utils/cn";
+import { useWorkflowState } from "../flow-builder/hooks/use-workflow-state";
 
 export function NavigationBarModule() {
+    const { getWorkflowData } = useWorkflowState();
+    const workflowData = getWorkflowData();
     const [isMobileView] = useApplicationState(s => [s.view.mobile]);
 
     const [isValidating, validateFlow] = useFlowValidator((isValid) => {
         if (isValid) toast.success("Flow is valid", { description: "You can now proceed to the next step", dismissible: true });
         else toast.error("Flow is invalid", { description: "Please check if the flow is complete and has no lone nodes" });
     });
+
+    async function handleExecuteFlow() {
+        validateFlow();
+        await axios.post("http://localhost:3000/api/executeFlow", {
+            config: workflowData
+        });
+    }
 
     return (
         <div className="relative shrink-0 bg-dark-700 px-1.5 py-2">
@@ -43,7 +54,7 @@ export function NavigationBarModule() {
                                 "h-full flex items-center justify-center outline-none gap-x-2 border border-dark-300 rounded-lg bg-dark-300/50 px-3 text-sm transition active:(bg-dark-400) hover:(bg-dark-200)",
                                 isValidating && "cursor-not-allowed op-50 pointer-events-none",
                             )}
-                            onClick={() => validateFlow()}
+                            onClick={handleExecuteFlow}
                         >
                             <Switch match={isValidating}>
                                 <Switch.Case value>

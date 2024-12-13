@@ -1,2 +1,3 @@
-2024/12/13-06:06:04.084 8603 Creating DB /Users/aniruddhdubge/icantcodefyi/rakshak/backend/.wwebjs_auth/session-client-one/Default/Local Storage/leveldb since it was missing.
-2024/12/13-06:06:04.098 8603 Reusing MANIFEST /Users/aniruddhdubge/icantcodefyi/rakshak/backend/.wwebjs_auth/session-client-one/Default/Local Storage/leveldb/MANIFEST-000001
+2024/12/13-16:53:25.093 a833 Reusing MANIFEST /home/sourabh/Desktop/Work/merlin-ke-rakshak/backend/.wwebjs_auth/session-client-one/Default/Local Storage/leveldb/MANIFEST-000001
+2024/12/13-16:53:25.093 a833 Recovering log #3
+2024/12/13-16:53:25.094 a833 Reusing old log /home/sourabh/Desktop/Work/merlin-ke-rakshak/backend/.wwebjs_auth/session-client-one/Default/Local Storage/leveldb/000003.log 

@@ -33,8 +33,6 @@ client.on('authenticated', () => {
 client.initialize();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-   
-
     try {
         // Wait for client to be ready if it's not
         if (!isClientReady) {
@@ -48,8 +46,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
         }
 
+        const { shareableUrl } = req.body;
+
         const number = '917488636141';
-        const message = 'Hi new merlin ke rakshak';
+        const message = `Hi your task is done. Here is the link: ${shareableUrl}`;
         const chatId = `${number}@c.us`;
 
         const response = await client.sendMessage(chatId, message);
