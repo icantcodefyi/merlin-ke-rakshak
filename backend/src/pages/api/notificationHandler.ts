@@ -60,7 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Run the middleware
         await runMiddleware(req, res, cors);
         await sendEmailNotification("shahbazfoyerforteams@gmail.com", config.sheetUrl);
-        // await sendWhatsappNotification("https://www.google.com");
+        await sendWhatsappNotification(config.sheetUrl);
 
         return res.status(200).json({ status: 'success' });
     } catch (error) {
