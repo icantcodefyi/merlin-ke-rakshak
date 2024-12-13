@@ -180,37 +180,25 @@ export function LLMNode({
                 <div className="flex flex-col divide-y divide-dark-200">
                     <div className="flex flex-col p-4">
                         <div className="text-xs text-light-900/50 font-medium">
-                            {data.mode === LLMMode.CONTENT_GENERATION ? "Content Type" : data.mode === LLMMode.TRANSLATION ? "Target Language" : "Input Text"}
+                            {data.mode === LLMMode.CONTENT_GENERATION ? "Input Text" : data.mode === LLMMode.TRANSLATION ? "Input Text" : "Input Text"}
                         </div>
                         <div className="line-clamp-4 mt-2 text-sm leading-snug">
-                            {data.mode === LLMMode.CONTENT_GENERATION
-                                ? (
-                                        isEmpty(data.contentType)
-                                            ? (
-                                                    <span className="text-light-900/80 italic">No content type selected...</span>
-                                                )
-                                            : (
-                                                    data.contentType
-                                                )
-                                    )
-                                : data.mode === LLMMode.TRANSLATION
-                                    ? (
-                                            isEmpty(data.targetLanguage)
-                                                ? (
-                                                        <span className="text-light-900/80 italic">No target language selected...</span>
-                                                    )
-                                                : (
-                                                        data.targetLanguage
-                                                    )
-                                        )
-                                    : isEmpty(data.input)
-                                        ? (
-                                                <span className="text-light-900/80 italic">No input text yet...</span>
-                                            )
-                                        : (
-                                                data.input
-                                            )}
+                            {isEmpty(data.input) ? (
+                                <span className="text-light-900/80 italic">No input text yet...</span>
+                            ) : (
+                                data.input
+                            )}
                         </div>
+                        {(data.mode === LLMMode.CONTENT_GENERATION && data.contentType) && (
+                            <div className="mt-2 text-xs text-light-900/50">
+                                Content Type: {data.contentType}
+                            </div>
+                        )}
+                        {(data.mode === LLMMode.TRANSLATION && data.targetLanguage) && (
+                            <div className="mt-2 text-xs text-light-900/50">
+                                Target Language: {data.targetLanguage}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
