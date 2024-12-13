@@ -27,14 +27,16 @@ function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: Function) 
 const resend = new Resend("re_U2tm7tUb_5RNp7pxGrFpiZXhSNr8pWJHQ");
 
 async function sendEmailNotification(
-    email: string,) {
+    email: string, sheetUrl: string) {
     console.log("email", email);
 
     const { data, error } = await resend.emails.send({
-        from: "Acme <onboarding@resend.dev>",
+        from: "Merlin AI <merlin-sat@resend.dev>",
         to: [email],
-        subject: "hello world",
-        html: "<strong>it works!</strong>",
+        subject: "Merlin AI Automation",
+        html: `
+            <p>Your task is done. You can access your sheet below:</p>
+            <p>Sheet URL: ${sheetUrl}</p>`,
     });
 
     if (data) {
@@ -57,7 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         // Run the middleware
         await runMiddleware(req, res, cors);
-        await sendEmailNotification("shahbazfoyerforteams@gmail.com");
+        await sendEmailNotification("shahbazfoyerforteams@gmail.com", config.sheetUrl);
         // await sendWhatsappNotification("https://www.google.com");
 
         return res.status(200).json({ status: 'success' });
