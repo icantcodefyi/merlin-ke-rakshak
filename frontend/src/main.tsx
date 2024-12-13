@@ -7,6 +7,7 @@ import { ClickScrollPlugin, OverlayScrollbars } from "overlayscrollbars";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import ReactGA from "react-ga4";
+import { ClerkProvider } from "@clerk/clerk-react";
 
 import "~/assets/styles/global.scss";
 
@@ -23,12 +24,20 @@ OverlayScrollbars.plugin(ClickScrollPlugin);
 
 setAutoFreeze(false);
 
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+    throw new Error("Missing Publishable Key");
+}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <ApplicationStateProvider>
-            <RouterProvider router={router} />
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+            <ApplicationStateProvider>
+                <RouterProvider router={router} />
 
-            <Analytics />
-        </ApplicationStateProvider>
+                <Analytics />
+            </ApplicationStateProvider>
+        </ClerkProvider>
     </React.StrictMode>,
 );
