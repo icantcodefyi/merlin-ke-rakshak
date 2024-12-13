@@ -2,11 +2,8 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cors from 'cors';
 import { getSheetRawData } from '@/serverActions/sheetSA';
-import { headers } from 'next/headers';
 
-const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkMGFlMTRkMjhkMTY1NzhiMzFjOGJlNmM4ZmRlZDM0ZDVlMWExYzEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQW5pcnVkZGggRHViZ2UiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTFo2R3JIMk4wenVmZmU1ekRsZG4wM1ZZczkzTmhYWW5lbkIwV0RBNmw1ZDV5a2hqaUw9czk2LWMiLCJyb2xlIjoicGFpZCIsInBsYW5OYW1lIjoiTWVybGluIFBybyIsImFnZ3JlZ2F0b3IiOiJzdHJpcGUiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZm95ZXItd29yayIsImF1ZCI6ImZveWVyLXdvcmsiLCJhdXRoX3RpbWUiOjE3MzM0ODMxMjYsInVzZXJfaWQiOiJ2UzZmZjJZV014aFh6MkhKeUlsNHRpOWE3S3kyIiwic3ViIjoidlM2ZmYyWVdNeGhYejJISnlJbDR0aTlhN0t5MiIsImlhdCI6MTczNDA5MjM2NCwiZXhwIjoxNzM0MDk1OTY0LCJlbWFpbCI6ImFkdWJnZUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzgwOTA1MDYxMzg0NzQwODk5NCJdLCJlbWFpbCI6WyJhZHViZ2VAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.kZEGkA6ytzH8C7DWX_cx-EkN4LyZX59cM_8-minOdpr0E-V_-cUkTJ3mSpqLD2U18CHVTEMT4clsourmpAxqzjW2UuIzXxK0EIFJFZdlbTn32r1KDsJFZRNwMI2EBAmiZJDPgPNHvMbSHogZbE9t9lI7VkBUq62ELDQXEV6pp3DukfKHuaZx9fvazHhP2Ud3NatWtgbxvbYeloOpHKYe6NdAP3sHf1LTnUFrKr0QyqofYPtRMlRCrdxBw6id0lnay_FfT11W2UzPR6ryxr1eFXLF6YbYHRIZ8mkbn1kmiUlRxSktfkRgoWDs5mlcksm3GrXQq0b9Us7fi0pIdB8v1Q"
-
-type ExecuteFlowTypes = "image-gen" | "ppt-gen";
+const bearerToken = "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkMGFlMTRkMjhkMTY1NzhiMzFjOGJlNmM4ZmRlZDM0ZDVlMWExYzEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU2hhaGJheiBBaG1hZCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLTU83ei1sSWstYTZHX1dWQTdFamd6TTdPSjZtdjlHN3VSUl9aSHBzcms2NThadGc9czk2LWMiLCJzdHJpcGVSb2xlIjoiYjJiX2FkbWluIiwicm9sZSI6Im93bmVyIiwicGxhbk5hbWUiOiJNZXJsaW4gVGVhbXMiLCJhZ2dyZWdhdG9yIjoic3RyaXBlIiwidGVhbUlkIjoiMTFlYmY5MjUtZmE2Yi00NjBmLTk5OGQtYjMzYzhmZmNhY2FlIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2ZveWVyLXdvcmsiLCJhdWQiOiJmb3llci13b3JrIiwiYXV0aF90aW1lIjoxNzMzNTYyMDQ2LCJ1c2VyX2lkIjoidzdkdlNkcFNYNlJzdk02cTdIbHpHTHZoWTNLMiIsInN1YiI6Inc3ZHZTZHBTWDZSc3ZNNnE3SGx6R0x2aFkzSzIiLCJpYXQiOjE3MzQwOTU3MDEsImV4cCI6MTczNDA5OTMwMSwiZW1haWwiOiJzaGFoYmF6QGZveWVyLndvcmsiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExODI2ODQwNjg5MDgwMDA3ODgxOSJdLCJlbWFpbCI6WyJzaGFoYmF6QGZveWVyLndvcmsiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.aK3ELF06aBhWnrcv1zRxTcFVZIYUvnBNRSc7BNjtwo9H-QgB6bcUrsxnWYh5DCrVz6qLx9YltAtRndGk5qlKtPxVW9S0PPfPOkbr3JMy_Vmd88eg7Sp73ws_E5E-1h9VGN2Dm-13hCqLb3VATBFh80at2G_X1XOQV68MvH-DJYfyG2XQL1kWqByOIbqSzrXvryIaEeGIUNjnczAsXIG8YiTcDBNDTQ8D1aqP-TB5R6Zqw8T0WxbF2sp5zQACuAn0AdkdwZlOESe0vDxjKCFa0mTG3IyzonFYf4CaaaHlKEjRvpwV6UstywXR9m9E2kVBiSQ8pfevc25O8xx_8Au6Lg"
 
 // Initialize the cors middleware
 const cors = Cors({
@@ -28,50 +25,55 @@ function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: Function) 
 }
 
 async function triggerImageGeneration(sheetData: any, prompt: string, columns: string[]) {
-    try {
-        console.log("Triggering image generation with:", {
+    const response = await axios.post("http://localhost:8080/v1/superAutomationTools/image-generate-sat", {
+        config: {
             prompt,
             columns,
-            dataLength: sheetData?.length
-        });
-        
-        const response = await axios.post("http://localhost:8080/v1/superAutomationTools/image-generate-sat", {
-            config: {
-                prompt,
-                columns,
-                data: sheetData
-            }
-        }, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        console.log("Image generation response:", response.data);
-        return response.data.data.sheetUrl;
-    } catch (error) {
-        console.error("Error in image generation:", error.response?.data || error.message);
-        throw error;
-    }
+            data: sheetData
+        }
+    }, {
+        headers: { 'Authorization': bearerToken }
+    })
+    return response.data.sheetUrl;
 }
 
 async function triggerNotifications(sheetUrl: string) {
     await axios.post("http://localhost:3000/api/notificationHandler", {
         config: {
             email: "shahbazfoyerforteams@gmail.com",
-            sheetUrl
+            sheetUrl: sheetUrl
         }
     });
+}
+
+async function getContextFromLLM(content: any, contentType: string, prompt: string) {
+    const response = await axios.post("http://localhost:8080/v1/superAutomationTools/context-generate-sat", {
+        config: {
+            content,
+            contentType,
+            prompt
+        }
+    }, {
+        headers: { 'Authorization': bearerToken }
+    })
+    return response.data.context;
 }
 
 // Simulated services for node types
 const services = {
     start: async (node: any) => {
         console.log(`Executing start node: ${node.id}`);
-        return { message: 'Workflow started' };
+        return { message: 'Workflow started' }; triggerImageGeneration
     },
     'google-integration': async (node: any) => {
         const response = await getSheetRawData(node.data.config.link)
         // Simulate fetching data from Google Sheets
         return { data: response, message: 'Google Sheets integration executed' };
+    },
+    'llm': async (node: any, content: any, contentType: string, prompt: string) => {
+        const context = await getContextFromLLM(content, contentType, prompt);
+        // Simulate image generation
+        return { data: context, message: 'Image generation completed' };
     },
     'image-generation': async (node: any, sheetData: any, prompt: string, columns: string[]) => {
         console.log("Image generation service called with:", {
@@ -115,21 +117,23 @@ async function processNode(nodeId: string, nodes: any, results = {}) {
 
     console.log(`Processing node: ${node.id}`);
     let result;
-    if (node.type === "image-generation") {
-        const previodNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "google-integration");
-        const columns = previodNode.data.config.columns;
+    if (node.type === "llm") {
+        const previousNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "google-integration");
+        const content = results[previousNode.id].data;
+        const contentType = node.data.contentType;
+        const prompt = node.data.input;
+        result = await service(node, content, contentType, prompt);
+    }
+    else if (node.type === "image-generation") {
+        const previousNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "google-integration");
+        const columns = previousNode.data.config.columns;
+        const content = results[previousNode.id].data;
         const prompt = node.data.config.prompt;
-        const sheetData = results[previodNode.id].data;
-        result = await service(node, sheetData, prompt, columns);
+        result = await service(node, content, prompt, columns);
     }
     else if (node.type === "text-message") {
-        const previodNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "image-generation");
-        console.log("Previous node for text-message:", previodNode);
-        console.log("All results so far:", results);
-        console.log("Previous node ID:", previodNode.id);
-        console.log("Results for previous node:", results[previodNode.id]);
-        const sheetUrl = results[previodNode.id].data;
-        console.log("Sheet URL:", sheetUrl);
+        const previousNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "image-generation");
+        const sheetUrl = results[previousNode.id].data;
         result = await service(node, sheetUrl);
     }
     else {

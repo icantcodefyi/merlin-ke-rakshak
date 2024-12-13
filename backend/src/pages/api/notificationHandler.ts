@@ -52,13 +52,13 @@ async function sendWhatsappNotification(shareableUrl: string) {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { config } = req.body;
 
-    console.log("config", config);
+    console.log("notificationHandler config", config);
 
     try {
         // Run the middleware
         await runMiddleware(req, res, cors);
         await sendEmailNotification("shahbazfoyerforteams@gmail.com");
-        await sendWhatsappNotification("https://www.google.com");
+        // await sendWhatsappNotification("https://www.google.com");
 
         return res.status(200).json({ status: 'success' });
     } catch (error) {
