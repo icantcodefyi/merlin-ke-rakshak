@@ -29,17 +29,10 @@ export function StartNode({ data, selected, isConnectable }: StartNodeProps) {
             >
                 <div className={cn(meta.icon, "size-4.5 shrink-0 mr-2 scale-130")} />
 
-                <span className="mr-1">
-                    {data.label || meta.title}
-                </span>
+                <span className="mr-1">{data.label || meta.title}</span>
             </div>
 
-            <CustomHandle
-                type="source"
-                id={sourceHandleId}
-                position={Position.Right}
-                isConnectable={isConnectable}
-            />
+            <CustomHandle type="source" id={sourceHandleId} position={Position.Right} isConnectable={isConnectable} />
         </>
     );
 }

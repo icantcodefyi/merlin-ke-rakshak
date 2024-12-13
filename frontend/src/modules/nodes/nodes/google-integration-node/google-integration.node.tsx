@@ -1,5 +1,5 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { type NodeProps, Position, useReactFlow } from "@xyflow/react";
+import { type Node, Position, useReactFlow } from "@xyflow/react";
 import { produce } from "immer";
 import { nanoid } from "nanoid";
 import { isEmpty } from "radash";
@@ -17,6 +17,7 @@ import { cn } from "~@/utils/cn";
 export enum GoogleIntegrationType {
     DOCS = "docs",
     SHEETS = "sheets",
+    SLIDES = "slides",
 }
 
 export interface GoogleDocsConfig {
@@ -28,9 +29,13 @@ export interface GoogleSheetsConfig {
     columns: string[];
 }
 
+export interface GoogleSlidesConfig {
+    link: string;
+}
+
 export interface GoogleIntegrationNodeData extends BaseNodeData {
     type: GoogleIntegrationType;
-    config: GoogleDocsConfig | GoogleSheetsConfig;
+    config: GoogleDocsConfig | GoogleSheetsConfig | GoogleSlidesConfig;
 }
 
 const NODE_TYPE = BuilderNode.GOOGLE_INTEGRATION;
@@ -41,7 +46,7 @@ interface FlowNode {
     [key: string]: any;
 }
 
-type GoogleIntegrationNodeProps = NodeProps<GoogleIntegrationNodeData>;
+type GoogleIntegrationNodeProps = Node<GoogleIntegrationNodeData>;
 
 export function GoogleIntegrationNode({ id, isConnectable, selected, data }: GoogleIntegrationNodeProps) {
     const meta = useMemo(() => getNodeDetail(NODE_TYPE), []);
@@ -56,9 +61,9 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                 const node = draft.find((n: FlowNode) => n.id === id);
                 if (node) {
                     node.data.type = type;
-                    node.data.config = type === GoogleIntegrationType.DOCS
-                        ? { link: "" }
-                        : { link: "", columns: [] };
+                    node.data.config = type === GoogleIntegrationType.SHEETS
+                        ? { link: "", columns: [] }
+                        : { link: "" };
                 }
             }));
         },
@@ -103,7 +108,16 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                                         type="button"
                                         className="h-7 flex items-center justify-center border border-transparent rounded-lg bg-transparent px-1.2 outline-none transition active:(border-dark-200 bg-dark-400/50) data-[state=open]:(border-dark-200 bg-dark-500) data-[state=closed]:(hover:bg-dark-100)"
                                     >
-                                        <div className={cn(data.type === GoogleIntegrationType.DOCS ? "i-mdi:file-document" : "i-mdi:google-spreadsheet", "size-4")} />
+                                        <div 
+                                            className={cn(
+                                                data.type === GoogleIntegrationType.DOCS
+                                                    ? "i-mdi:file-document"
+                                                    : data.type === GoogleIntegrationType.SHEETS
+                                                        ? "i-mdi:google-spreadsheet"
+                                                        : "i-mdi:presentation-play",
+                                                "size-4",
+                                            )} 
+                                        />
                                         <div className="i-lucide:chevrons-up-down ml-1 size-3 op-50" />
                                     </button>
                                 </DropdownMenu.Trigger>
@@ -135,6 +149,17 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                                                 <div className="i-mdi:google-spreadsheet size-4" />
                                                 <div className="text-xs font-medium leading-none tracking-wide">
                                                     Google Sheets
+                                                </div>
+                                            </div>
+                                        </DropdownMenu.Item>
+                                        <DropdownMenu.Item
+                                            className="cursor-pointer border border-transparent rounded-lg p-1.5 outline-none transition active:(border-dark-100 bg-dark-300) hover:bg-dark-100"
+                                            onSelect={() => onTypeChange(GoogleIntegrationType.SLIDES)}
+                                        >
+                                            <div className="flex items-center gap-x-2">
+                                                <div className="i-mdi:presentation-play size-4" />
+                                                <div className="text-xs font-medium leading-none tracking-wide">
+                                                    Google Slides
                                                 </div>
                                             </div>
                                         </DropdownMenu.Item>
@@ -185,7 +210,11 @@ export function GoogleIntegrationNode({ id, isConnectable, selected, data }: Goo
                                 ? (
                                         <span className="text-light-900/80 italic">
                                             No Google
-                                            {data.type === GoogleIntegrationType.DOCS ? "Docs" : "Sheets"}
+                                            {data.type === GoogleIntegrationType.DOCS
+                                                ? "Docs"
+                                                : data.type === GoogleIntegrationType.SHEETS
+                                                    ? "Sheets"
+                                                    : "Slides"}
                                             {" "}
                                             link provided yet...
                                         </span>

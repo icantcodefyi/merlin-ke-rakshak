@@ -8,7 +8,7 @@ import { createNodeWithData, createNodeWithDefaultData } from "~/modules/nodes/u
 const startNode = createNodeWithDefaultData(BuilderNode.START, { position: { x: 0, y: 267 } });
 const mobileResponsiveInformationTextMessageNode = createNodeWithData<TextMessageNodeData>(BuilderNode.TEXT_MESSAGE, {
     channel: "telegram",
-    message: "This project is mobile responsive! 📱 Try it out on your mobile device! 🚀",
+    message: "This project made by Merlin ke Rakshak! 🚀",
     deletable: true,
 }, { position: { x: 300, y: 180 } });
 const endNode = createNodeWithDefaultData(BuilderNode.END, { position: { x: 800, y: 267 } });
