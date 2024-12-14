@@ -47,8 +47,8 @@ async function sendEmailNotification(
     }
 }
 
-async function sendWhatsappNotification(shareableUrl: string) {
-    axios.post('http://localhost:3000/api/whatsapp', { shareableUrl });
+async function sendWhatsappNotification(message: string, type: string) {    
+    await axios.post('http://localhost:3000/api/whatsapp', { message, type });
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -59,8 +59,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         // Run the middleware
         await runMiddleware(req, res, cors);
-        await sendEmailNotification("shahbazfoyerforteams@gmail.com", config.sheetUrl);
-        await sendWhatsappNotification(config.sheetUrl);
+        if (config.type === "image-generation") {
+            await sendEmailNotification("shahbazfoyerforteams@gmail.com", config.message);
+        }
+        await sendWhatsappNotification(config.message, config.type);
 
         return res.status(200).json({ status: 'success' });
     } catch (error) {

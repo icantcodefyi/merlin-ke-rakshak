@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cors from 'cors';
 import { getSheetRawData } from '@/serverActions/sheetSA';
 
-const bearerToken = "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkMGFlMTRkMjhkMTY1NzhiMzFjOGJlNmM4ZmRlZDM0ZDVlMWExYzEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQW5pcnVkZGggRHViZ2UiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTFo2R3JIMk4wenVmZmU1ekRsZG4wM1ZZczkzTmhYWW5lbkIwV0RBNmw1ZDV5a2hqaUw9czk2LWMiLCJyb2xlIjoicGFpZCIsInBsYW5OYW1lIjoiTWVybGluIFBybyIsImFnZ3JlZ2F0b3IiOiJzdHJpcGUiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZm95ZXItd29yayIsImF1ZCI6ImZveWVyLXdvcmsiLCJhdXRoX3RpbWUiOjE3MzM0ODMxMjYsInVzZXJfaWQiOiJ2UzZmZjJZV014aFh6MkhKeUlsNHRpOWE3S3kyIiwic3ViIjoidlM2ZmYyWVdNeGhYejJISnlJbDR0aTlhN0t5MiIsImlhdCI6MTczNDEwNjI2OCwiZXhwIjoxNzM0MTA5ODY4LCJlbWFpbCI6ImFkdWJnZUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzgwOTA1MDYxMzg0NzQwODk5NCJdLCJlbWFpbCI6WyJhZHViZ2VAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.VtW-c6hxMjETgGIfa3GHCQYc8YLLqVfg9Jrn6wlcR5iXaviqJcqva6ryCrDCNdZ0Mbt04Iy-gzy-uqhLIuyRr1ZyYaJKRFkG1PPHvqmj7UmXLCx89AVToykBcT7zRH23DsmuZo23JD6F9mJQwiAGsM8-wzaPrZAQntDEbRZrzS_EE1fovuxW_xJ2n5t3OYfI5ziJfiD-6GplwMN3fqRzlEDRV96bRVuaTBVemK3m5AHN8cD8ZQA_SGwNa1Rald1iwggqrlxgrQMcFqxMBH8H6YK5WqrbR4P6azqaXoBez-T13TBLVWrEnLa1Sg8VjB0DpHq8zi8R1n2FYiuieUS6dA"
+const bearerToken = "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkMGFlMTRkMjhkMTY1NzhiMzFjOGJlNmM4ZmRlZDM0ZDVlMWExYzEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU2hhaGJheiBBaG1hZCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLTU83ei1sSWstYTZHX1dWQTdFamd6TTdPSjZtdjlHN3VSUl9aSHBzcms2NThadGc9czk2LWMiLCJzdHJpcGVSb2xlIjoiYjJiX2FkbWluIiwicm9sZSI6Im93bmVyIiwicGxhbk5hbWUiOiJNZXJsaW4gVGVhbXMiLCJhZ2dyZWdhdG9yIjoic3RyaXBlIiwidGVhbUlkIjoiMTFlYmY5MjUtZmE2Yi00NjBmLTk5OGQtYjMzYzhmZmNhY2FlIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2ZveWVyLXdvcmsiLCJhdWQiOiJmb3llci13b3JrIiwiYXV0aF90aW1lIjoxNzMzNTYyMDQ2LCJ1c2VyX2lkIjoidzdkdlNkcFNYNlJzdk02cTdIbHpHTHZoWTNLMiIsInN1YiI6Inc3ZHZTZHBTWDZSc3ZNNnE3SGx6R0x2aFkzSzIiLCJpYXQiOjE3MzQxMzgyMzAsImV4cCI6MTczNDE0MTgzMCwiZW1haWwiOiJzaGFoYmF6QGZveWVyLndvcmsiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExODI2ODQwNjg5MDgwMDA3ODgxOSJdLCJlbWFpbCI6WyJzaGFoYmF6QGZveWVyLndvcmsiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.wDG832PFH3jvs99b61P1dE8BmoBNds-tMUOgTNRWgVOSmwC_3EJMwVxqJ4-Za7g63YjnehI-0NCFWBjjPuq-ne8OgbH0O9ttC4Q29Pnf1YrYDNykUGAym5MqTN6HLn9mbWysozlJGlqdIrdxrgRXPBE43IYmXCbMHjbQUuITvzvRodH2co5lSgaLe4CILG2N0GBGzygNm4JYSup2dHu8rzb3kMZX4d99DBxCqA5_B-oZV9Zx_TEDxUA9Nf5YAYBHMoWzWW2gOwWSG4pEJfggOgxbUlzQhEKwbf8P8DK-xQ369ZAaSFhO04Q7DBY-dbx4Ln53Ni7DNcWnP1f36Q3ujg"
 
 // Initialize the cors middleware
 const cors = Cors({
@@ -37,13 +37,19 @@ async function triggerImageGeneration(sheetData: any, prompt: string, columns: s
     return response.data.data.sheetUrl;
 }
 
-async function triggerNotifications(sheetUrl: string) {
+async function triggerNotifications(message: string, nodeType: string) {
     await axios.post("http://localhost:3000/api/notificationHandler", {
         config: {
             email: "shahbazfoyerforteams@gmail.com",
-            sheetUrl: sheetUrl
+            message,
+            type: nodeType
         }
     });
+}
+
+async function getCryptoNewsData(data: any) {
+    const response = await axios.post('http://localhost:3000/api/getCryptoNewsData', { data });
+    return response.data;
 }
 
 async function getContextFromLLM(content: any, contentType: string, prompt: string) {
@@ -75,6 +81,11 @@ const services = {
         // Simulate image generation
         return { data: context, message: 'Image generation completed' };
     },
+    'crypto-analyzer': async (node: any, content: any) => {
+        const message = await getCryptoNewsData(content);
+        // Simulate image generation
+        return { data: message, message: 'Crypto analyzing completed' };
+    },
     'image-generation': async (node: any, sheetData: any, prompt: string, columns: string[]) => {
         console.log("Image generation service called with:", {
             nodeId: node.id,
@@ -91,8 +102,8 @@ const services = {
             throw error;
         }
     },
-    'text-message': async (node: any, sheetUrl: string) => {
-        await triggerNotifications(sheetUrl);
+    'text-message': async (node: any, message: string, nodeType: string) => {
+        await triggerNotifications(message, nodeType);
         // Simulate sending a text message
         return { status: 'sent', message: 'Text message sent' };
     },
@@ -117,7 +128,12 @@ async function processNode(nodeId: string, nodes: any, results = {}) {
 
     console.log(`Processing node: ${node.id}`);
     let result;
-    if (node.type === "llm") {
+    if (node.type === "crypto-analyzer") {
+        const previousNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "google-integration");
+        const content = results[previousNode.id].data;
+        result = await service(node, content);
+    }
+    else if (node.type === "llm") {
         const previousNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "google-integration");
         const content = results[previousNode.id].data;
         const contentType = node.data.contentType;
@@ -132,9 +148,10 @@ async function processNode(nodeId: string, nodes: any, results = {}) {
         result = await service(node, content, prompt, columns);
     }
     else if (node.type === "text-message") {
-        const previousNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && n.type === "image-generation");
-        const sheetUrl = results[previousNode.id].data;
-        result = await service(node, sheetUrl);
+        const previousNode = nodes.find((n: any) => n.id === node.connections.incoming[0] && (n.type === "image-generation" || n.type === "crypto-analyzer"));
+        const message = results[previousNode.id].data;
+        const nodeType = previousNode.type;
+        result = await service(node, message, nodeType);
     }
     else {
         result = await service(node);

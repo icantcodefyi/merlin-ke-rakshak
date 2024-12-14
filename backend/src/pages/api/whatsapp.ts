@@ -46,14 +46,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
         }
 
-        const { shareableUrl } = req.body;
+        const { message: messageBody, type } = req.body;
 
         const number = '917488636141';
-        const message = `Hi your task is done. Here is the link: ${shareableUrl}`;
         const chatId = `${number}@c.us`;
+        let message = ""
+        if (type === "image-generation") {
+            message = `Hi your task is done. Here is the link: ${messageBody}`;
+        } else if (type === "crypto-analyzer") {
+            message = messageBody
+        }
+        await client.sendMessage(chatId, message);
 
-        const response = await client.sendMessage(chatId, message);
-        return res.status(200).json({ success: true, message: 'Message sent successfully', response });
+        return res.status(200).json({ success: true, message: 'Message sent successfully' });
 
     } catch (error) {
         console.error('Failed to send message:', error);
